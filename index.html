@@ -1,0 +1,50 @@
+<html>
+
+<body>
+    <!-- ... Your HTML and CSS -->
+    <h1> Gemini do André 3.0 </h1>
+    <textarea placeholder="Pergunte aqui"></textarea>
+    <br>
+    <button class="resposta-button">Gerar resposta</button>
+
+    <br>
+    <br>
+    <div class="resposta-layer">
+        Resposta aqui
+    </div>
+    <script type="importmap">
+    {
+        "imports": {
+            "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
+    }
+    </script>
+    
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+
+        // Access your API key (see "Set up your API key" above)
+        const genAI = new GoogleGenerativeAI('API_KEY');
+        const resposta = document.querySelector('.resposta-layer');
+        const pergunta = document.querySelector('textarea');
+        // console.log(respostaLayer)
+        const button = document.querySelector('.resposta-button'); // Seleciona o botão
+
+        button.addEventListener('click', run); // Adiciona o manipulador de eventos
+
+        async function run() {
+        // For text-only input, use the gemini-pro model
+            const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+
+            const prompt = pergunta.value
+            console.log("prompt: \n" + prompt )
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            const text = response.text();
+            resposta.innerHTML = text
+            console.log(text);
+        }
+    </script>
+</body>
+
+</html>
