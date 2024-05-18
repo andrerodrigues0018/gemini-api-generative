@@ -1,0 +1,221 @@
+<html>
+
+<body>
+    <style>
+        *{
+            
+            font-family: 'amazon ember'; 
+            /* letter-spacing:.25px */
+
+        }
+
+        input, textarea, button{
+            width: 700px;
+            margin-top:5px;
+            padding:5px;
+        }
+
+
+        button{
+            /* background:#ff9900; */
+            color:rgb(22, 25, 31);
+            border:1px solid grey;
+            font-size:14px;
+            /* font-weight: 700; */
+            letter-spacing:.25px;
+            border-radius:2px;
+            /* width: ; */
+        }
+
+        .resposta-layer{
+            color:rgb(22, 25, 31);
+            line-height:  12px;
+            font-size: 14px;min-inline-size: 0;
+            word-break: break-word;
+            /* overflow: ; */
+            border: solid 1px rgb(104, 112, 120); 
+            background-color: rgb(242, 243, 243);
+            padding: 14px;
+            width: 700px; 
+        }
+        .resposta-renderizada{
+            color:rgb(22, 25, 31);
+            line-height:  12px;
+            font-size: 14px;min-inline-size: 0;
+            word-break: break-word;
+            border: dotted 1px rgb(104, 112, 120); 
+            padding: 14px;
+            width: 700px; 
+        }
+        h2{
+            font-family: 'amazon ember'; 
+            font-size:18px;
+            font-weight: 700;
+            color:rgb(22, 25, 31);
+            line-height: 12px;
+            /* margin:0 */
+        }
+        h4{
+            font-family: 'amazon ember'; 
+            font-size:15px;
+            font-weight: 700;
+            color:rgb(22, 25, 31);
+            /* margin:15px 0; */
+            /* margin:0 */
+        }
+        h3{
+            font-family: 'amazon ember'; 
+            font-size:18px;
+            font-weight: 700;
+            color:rgb(22, 25, 31);
+            line-height: 12px;
+            /* margin:0 */
+        }
+        
+        ul{list-style-type: disc;
+            /* line-height:  12px; */
+        }
+        li{
+            list-style-position: outside;
+            /* line-height:  12px; */
+
+        }
+    </style>
+    <!-- ... Your HTML and CSS -->
+    <meta charset="UTF-8">
+    <link href="https://fonts.cdnfonts.com/css/amazon-ember" rel="stylesheet">
+    <h1> Gemini do André 3.0 </h1>
+    <input type="text" placeholder="O código da user story. Ex: ENG-53"><br>
+    <textarea placeholder="Pergunte aqui" rows="5"></textarea>
+    <br>
+    <button class="resposta-button">Gerar Descrição</button>
+
+    <br>
+    <br>
+    <pre class="resposta-layer">
+        Resposta aqui
+    </pre>
+    <div class="resposta-renderizada">
+    </div>
+    <script type="importmap">
+    {
+        "imports": {
+            "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
+    }
+    </script>
+
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+
+
+        // Access your API key (see "Set up your API key" above)
+        const genAI = new GoogleGenerativeAI('API_KEY');
+        const userStoryName = document.querySelector('input');
+        const description = document.querySelector('textarea');
+        const resposta = document.querySelector('.resposta-layer');
+        const respostaRenderizada = document.querySelector('.resposta-renderizada');
+        const button = document.querySelector('.resposta-button');
+
+        
+
+
+        button.addEventListener('click', run); // Adiciona o manipulador de eventos
+
+        async function run() {
+            // For text-only input, use the gemini-pro model
+            const model = genAI.getGenerativeModel({ model: "gemini-pro", generationConfig: { temperature: 0.3 } });
+
+            const defaultPrompt = `
+                Gemini estou precisando descrever em inglês no codecommit as melhorias que fiz no meu projeto.
+
+                Template de exemplo:
+
+                Title: ENG-53 - grant positive access response if course path contains legacy sufix 
+
+                Content in markdown:
+                ## Description
+                This PR addresses issue ENG-53 created from the blocked content bug, on the old platform (data formation legacy).
+                ## Changes Made
+                #### 1. Created a condition that send a positive access response for the front-end videoplayer.
+                - verified the course path received in route payload, and if it contains the "legacy" sufix, it means that the content shall be accessible (based on 3.0 migration business rule).
+
+                ---
+
+                Agora o que eu fiz: 
+                Em ${userStoryName.value} : ${description.value}
+            `;
+            const result = await model.generateContent(defaultPrompt);
+            const response = await result.response;
+            const text = response.text();
+            resposta.innerHTML = text
+            const htmlContent = markdownToHtml(text);
+            console.log(htmlContent)
+            respostaRenderizada.innerHTML = htmlContent;
+            console.log(text);
+        }
+
+        function markdownToHtml(markdownText) {
+            // Regular expressions for common markdown elements:
+            const boldRegex = /\*\*(.*?)\*\*/;
+            const italicRegex = /\_(.*?)\_/;
+            const codeRegex = /`(.*?)`/;
+            const blockquoteRegex = /^> (.*)$/gm; // Multi-line blockquotes
+            const listRegex = /^-\s+(.*)$/;
+            const linkInlineRegex = /\[(.*?)\]\((.*?)\)/; // Inline links
+            const linkReferenceRegex = /\[(.*?)\]\[(.*?)\]/g; // Reference links (needs separate parsing)
+            const headingRegex = /^(#{1,6})\s+(.*)$/;
+            const plainTextRegex = /^([^#*-+]+)$/; // Matches lines without special formatting
+
+
+            let html = "";
+            const lines = markdownText.split("\n");
+            for (const line of lines) {
+                let processedLine = line;
+                processedLine = processedLine.replace(listRegex, "<li>$1</li>");
+
+                const headingMatch = headingRegex.exec(line);
+                if (headingMatch) {
+                    const level = headingMatch[1].length;
+                    processedLine = `<h${level}>${headingMatch[2]}</h${level}>`;
+                    console.log("Processed Heading:", processedLine);
+                }
+                processedLine = processedLine.replace(boldRegex, "<strong>$1</strong>");
+                processedLine = processedLine.replace(italicRegex, "<em>$1</em>");
+                processedLine = processedLine.replace(codeRegex, "<code>$1</code>");
+                processedLine = processedLine.replace(blockquoteRegex, function (match, content) {
+                    return `<blockquote><p>${content.replace(/\n/g, "</p><p>")}</p></blockquote>`;
+                });
+            
+                processedLine = processedLine.replace(linkInlineRegex, function (match, text, url) {
+                    return `<a href="${url}">${text}</a>`;
+                });
+                const referenceLinks = {};
+                markdownText.split("\n").forEach(line => {
+                    const referenceMatch = line.match(/^(\[(.*?)\]):\s+(.*)$/);
+                    if (referenceMatch) {
+                        referenceLinks[referenceMatch[2]] = referenceMatch[3];
+                    }
+                });
+
+                // Process reference links (after loop to avoid order issues):
+                processedLine = processedLine.replace(linkReferenceRegex, function (match, text, reference) {
+                    if (referenceLinks[reference]) {
+                        return `<a href="${referenceLinks[reference]}">${text}</a>`;
+                    } else {
+                        // Handle broken reference links (optional):
+                        console.warn(`Broken reference link: ${reference}`);
+                        return match; // Or provide a default text or class for broken links
+                    }
+                });
+
+                html += processedLine + "\n"; // Add newline for proper formatting
+            }
+
+            return html;
+        }
+
+    </script>
+</body>
+
+</html>
