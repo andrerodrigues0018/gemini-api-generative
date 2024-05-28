@@ -1,5 +1,8 @@
 <html>
+<head>
+    <meta charset="UTF-8">
 
+</head>
 <body>
     <style>
         *{
@@ -15,7 +18,9 @@
             padding:5px;
         }
 
-
+        #imagemPreview{
+            width: 700px;
+        }
         button{
             /* background:#ff9900; */
             color:rgb(22, 25, 31);
@@ -46,6 +51,7 @@
             border: dotted 1px rgb(104, 112, 120); 
             padding: 14px;
             width: 700px; 
+            margin-top: 20px;
         }
         h2{
             font-family: 'amazon ember'; 
@@ -82,21 +88,24 @@
         }
     </style>
     <!-- ... Your HTML and CSS -->
-    <meta charset="UTF-8">
     <link href="https://fonts.cdnfonts.com/css/amazon-ember" rel="stylesheet">
     <h1> Gemini do André 3.0 </h1>
-    <input type="text" placeholder="O código da user story. Ex: ENG-53"><br>
-    <textarea placeholder="Descreva sua tarefa aqui" rows="5"></textarea>
-    <br>
-    <button class="resposta-button">Gerar Descrição</button>
+
+    <form id="imageForm" enctype="multipart/form-data">
+        <input type="file" id="imageInput" accept="image/*"><br>
+        <button type="button" class="resposta-button">Enviar</button>
+    </form>
 
     <br>
     <br>
-    <pre class="resposta-layer">
-        Resposta aqui
-    </pre>
-    <div class="resposta-renderizada">
-    </div>
+    <h4> Minha imagem:</h4>
+    <img id="imagemPreview" src="https://developer.mozilla.org/pt-BR/docs/Learn/CSS/CSS_layout/Flexbox/flexbox-example7.png">
+    <h4> Resultados:</h4>
+
+    <textarea class="resposta-layer"><code>código</code>
+    </textarea>
+    <div class="resposta-renderizada">código compilado</div>
+
     <script type="importmap">
     {
         "imports": {
@@ -106,11 +115,10 @@
     </script>
 
     <script type="module">
-        import { GoogleGenerativeAI } from "@google/generative-ai";
-
+        // import { GoogleGenerativeAI } from "@google/generative-ai";
 
         // Access your API key (see "Set up your API key" above)
-        const genAI = new GoogleGenerativeAI('API_KEY');
+        // const genAI = new GoogleGenerativeAI('API_KEY');
         const userStoryName = document.querySelector('input');
         const description = document.querySelector('textarea');
         const resposta = document.querySelector('.resposta-layer');
@@ -120,7 +128,7 @@
         
 
 
-        button.addEventListener('click', run); // Adiciona o manipulador de eventos
+        button.addEventListener('click', sendImage); // Adiciona o manipulador de eventos
 
         async function run() {
             // For text-only input, use the gemini-pro model
@@ -213,6 +221,63 @@
             }
 
             return html;
+        }
+
+        function sendImage() {
+            const inputElement = document.getElementById('imageInput');
+            const file = inputElement.files[0];
+            const imagemPreview = document.querySelector('#imagemPreview');
+
+            if (!file) {
+                alert('Por favor, selecione uma imagem.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const base64ImageFULL = event.target.result;
+                const base64Image = event.target.result.split(',')[1]; // Remove o cabeçalho "data:image/jpeg;base64,"
+
+                imagemPreview.src = base64ImageFULL;
+
+                const payload = {
+                    "contents": [
+                        {
+                            "parts": [
+                            { "text": `Preciso que você atue como um programador para traduzir essa imagem para um código html e css com style inline, mas focado em garantir o alinhamento e proporção dos objetos, exemplo: <body> <h1>Teste</h1> <style> h1{ color: grey } </style>, gostaria que devolve-se só o codigo e não as crases ` },
+                                {
+                                    "inline_data": {
+                                        "mime_type": "image/jpeg",
+                                        "data": base64Image
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                };
+                const API_KEY = 'AIzaSyCGNiohucrsbjoemtaZcgaYKzqJiuCcQV8'
+
+                fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent?key=' + API_KEY, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Resposta da API:', data);
+                        resposta.value = data.candidates[0].content.parts[0].text
+                        respostaRenderizada.innerHTML = data.candidates[0].content.parts[0].text
+                        alert('Imagem enviada com sucesso!');
+                    })
+                    .catch(error => {
+                        console.error('Erro ao enviar imagem:', error);
+                        alert('Erro ao enviar imagem.');
+                    });
+            };
+
+            reader.readAsDataURL(file);
         }
 
     </script>
