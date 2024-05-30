@@ -42,15 +42,16 @@ app.get('/gemini/test', (req, res) => {
 
 // Rota POST para criar um novo produto
 app.post('/gemini/pr', (req, res) => {
+
     const { userStoryName, description } = req.body;
+
     const defaultPrompt = `
         Gemini estou precisando descrever em inglês no codecommit as melhorias que fiz no meu projeto.
 
         Template de exemplo:
 
-        Title: ENG-53 - grant positive access response if course path contains legacy sufix 
-
-        Content in markdown:
+        ENG-53 - grant positive access response if course path contains legacy sufix 
+        <break>
         ## Description
         This PR addresses issue ENG-53 created from the blocked content bug, on the old platform (data formation legacy).
         ## Changes Made
@@ -84,11 +85,13 @@ app.post('/gemini/pr', (req, res) => {
     .then(response => response.json())
     .then(data => {
         const text = data.candidates[0].content.parts[0].text
-        res.json({ text });
+        const textSplited = text.split("<break>")
+        const title = textSplited[0]
+        const markdown = textSplited[1]
+        res.json({ title, markdown });
     })
     .catch(error => {
-        console.error('Erro ao enviar imagem:', error);
-        alert('Erro ao enviar imagem.');
+        console.error('Erro ao processar pergunta:', error);
     });
 
 });
