@@ -1,8 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
 dotenv.config();
 
 const app = express();
+app.use(bodyParser.json());
 const port = 3000;
 const API_KEY = process.env.API_KEY
 
@@ -40,8 +42,6 @@ app.get('/gemini/test', (req, res) => {
 
 // Rota POST para criar um novo produto
 app.post('/gemini/pr', (req, res) => {
-    console.log(req.body)
-    return 1
     const { userStoryName, description } = req.body;
     const defaultPrompt = `
         Gemini estou precisando descrever em inglês no codecommit as melhorias que fiz no meu projeto.
