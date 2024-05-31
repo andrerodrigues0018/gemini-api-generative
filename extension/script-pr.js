@@ -5,7 +5,6 @@ const resposta = document.querySelector('.resposta-layer');
 const respostaRenderizada = document.querySelector('.resposta-renderizada');
 
 button.addEventListener('click', processRequest); // Adiciona o manipulador de eventos
-const API_URL = process.env.API_URL;
 
 function processRequest() {
         // Desativar o botão
@@ -13,55 +12,27 @@ function processRequest() {
 
     // Alterar o texto do botão
     button.textContent = 'Carregando...';
-
-    const defaultPrompt = `
-        Gemini estou precisando descrever em inglês no codecommit as melhorias que fiz no meu projeto.
-
-        Template de exemplo:
-
-        Title: ENG-53 - grant positive access response if course path contains legacy sufix 
-
-        Content in markdown:
-        ## Description
-        This PR addresses issue ENG-53 created from the blocked content bug, on the old platform (data formation legacy).
-        ## Changes Made
-        #### 1. Created a condition that send a positive access response for the front-end videoplayer.
-        - verified the course path received in route payload, and if it contains the "legacy" sufix, it means that the content shall be accessible (based on 3.0 migration business rule).
-
-        ---
-
-        Agora o que eu fiz: 
-        Em ${userStoryName.value} : ${description.value}
-    `;
-
-
-    const payload = {
-        "contents": [
-            {
-                "parts": [
-                    { "text": defaultPrompt }
-                ]
-            }
-        ]
-    };
-    const API_KEY = 'API_KEY'
-
-    fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=' + API_KEY, {
+    console.log("oi")
+    fetch('http://localhost:3000/gemini/pr/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({
+            userStoryName: userStoryName.value,
+            description: description.value 
+        })
     })
     .then(response => response.json())
     .then(data => {
         const text = data.candidates[0].content.parts[0].text
-        resposta.innerHTML = text
-        const htmlContent = markdownToHtml(text);
-        respostaRenderizada.innerHTML = htmlContent;
-        button.disabled = false;
-        button.textContent = "Gerar Descrição"
-        alert('Gerada descrição do PR com sucesso!');
+        console.log(text)
+        // resposta.innerHTML = text
+        // const htmlContent = markdownToHtml(text);
+        // respostaRenderizada.innerHTML = htmlContent;
+        // button.disabled = false;
+        // button.textContent = "Gerar Descrição"
+        // alert('Gerada descrição do PR com sucesso!');
     })
     .catch(error => {
         console.error('Erro ao enviar imagem:', error);
