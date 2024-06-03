@@ -8,16 +8,12 @@ button.addEventListener('click', processRequest); // Adiciona o manipulador de e
 
 function processRequest() {
         // Desativar o botão
-    button.disabled = true;
+    // button.disabled = true;
 
     // Alterar o texto do botão
     button.textContent = 'Carregando...';
-    console.log("oi")
-    fetch('http://localhost:3000/gemini/pr/', {
+    fetch('http://127.0.0.1:8787', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
         body: JSON.stringify({
             userStoryName: userStoryName.value,
             description: description.value 
@@ -25,14 +21,15 @@ function processRequest() {
     })
     .then(response => response.json())
     .then(data => {
-        const text = data.candidates[0].content.parts[0].text
-        console.log(text)
-        // resposta.innerHTML = text
-        // const htmlContent = markdownToHtml(text);
-        // respostaRenderizada.innerHTML = htmlContent;
-        // button.disabled = false;
-        // button.textContent = "Gerar Descrição"
-        // alert('Gerada descrição do PR com sucesso!');
+        const text = data.markdown
+        
+        resposta.innerHTML = text
+        console.log(data)
+        const htmlContent = markdownToHtml(text);
+        respostaRenderizada.innerHTML = htmlContent;
+        button.disabled = false;
+        button.textContent = "Gerar Descrição"
+        alert('Gerada descrição do PR com sucesso!');
     })
     .catch(error => {
         console.error('Erro ao enviar imagem:', error);
