@@ -4,15 +4,12 @@ const description = document.querySelector('textarea');
 const resposta = document.querySelector('.resposta-layer');
 const respostaRenderizada = document.querySelector('.resposta-renderizada');
 
-button.addEventListener('click', processRequest); // Adiciona o manipulador de eventos
+button.addEventListener('click', processRequest); 
 
 function processRequest() {
-        // Desativar o botão
-    // button.disabled = true;
-
-    // Alterar o texto do botão
+    button.disabled = true
     button.textContent = 'Carregando...';
-    fetch('https://cloudflare-works.andre-rodrigues0018.workers.dev', {
+    fetch('https://cloudflare-works.andre-rodrigues0018.workers.dev/gemini/pr', {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -40,16 +37,15 @@ function processRequest() {
 }
 
             function markdownToHtml(markdownText) {
-                // Regular expressions for common markdown elements:
                 const boldRegex = /\*\*(.*?)\*\*/;
                 const italicRegex = /\_(.*?)\_/;
                 const codeRegex = /`(.*?)`/;
-                const blockquoteRegex = /^> (.*)$/gm; // Multi-line blockquotes
+                const blockquoteRegex = /^> (.*)$/gm;
                 const listRegex = /^-\s+(.*)$/;
-                const linkInlineRegex = /\[(.*?)\]\((.*?)\)/; // Inline links
-                const linkReferenceRegex = /\[(.*?)\]\[(.*?)\]/g; // Reference links (needs separate parsing)
+                const linkInlineRegex = /\[(.*?)\]\((.*?)\)/;
+                const linkReferenceRegex = /\[(.*?)\]\[(.*?)\]/g; 
                 const headingRegex = /^(#{1,6})\s+(.*)$/;
-                const plainTextRegex = /^([^#*-+]+)$/; // Matches lines without special formatting
+                const plainTextRegex = /^([^#*-+]+)$/; 
 
 
                 let html = "";
@@ -82,18 +78,16 @@ function processRequest() {
                         }
                     });
 
-                    // Process reference links (after loop to avoid order issues):
                     processedLine = processedLine.replace(linkReferenceRegex, function (match, text, reference) {
                         if (referenceLinks[reference]) {
                             return `<a href="${referenceLinks[reference]}">${text}</a>`;
                         } else {
-                            // Handle broken reference links (optional):
                             console.warn(`Broken reference link: ${reference}`);
-                            return match; // Or provide a default text or class for broken links
+                            return match;
                         }
                     });
 
-                    html += processedLine + "\n"; // Add newline for proper formatting
+                    html += processedLine + "\n";
                 }
 
                 return html;
