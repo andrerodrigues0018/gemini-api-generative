@@ -12,8 +12,9 @@ function processRequest() {
 
     // Alterar o texto do botão
     button.textContent = 'Carregando...';
-    fetch('http://127.0.0.1:8787', {
+    fetch('https://cloudflare-works.andre-rodrigues0018.workers.dev', {
         method: 'POST',
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             userStoryName: userStoryName.value,
             description: description.value 
