@@ -60,6 +60,7 @@
             padding: 14px;
             width: 700px; 
             margin-bottom:5px;
+            height: 20px;
         }
         h2{
             font-family: 'amazon ember'; 
@@ -96,26 +97,35 @@
         }
         .container{
             display: flex;
+            height: auto;
         }
-
+        .container .titulo-renderizada, .container .resposta-layer{
+            padding-left: 55px;
+            
+        }
         .container .img-box{
             margin-right: -45px;
-            margin-left: 10px;
-            margin-top: 30px;
+            margin-left: 15px;
+            margin-top: 25px;
             z-index: 1;
         }
 
+        .container .img-box-2{
+            margin-top: 10px;
+        }
+
         .container .img-box img{
-            width: 25px;
-            height: 25px;
+            width: 20px;
+            height: 20px;
             background-color: rgba(144, 143, 143, 0.46);
             border-radius: 100%;
             padding:5px;
+            cursor: pointer;
         } 
 
         .container img:hover{
-            fill: bisque;
-            background-color: bisque;
+            fill: rgb(70, 67, 65);
+            background-color:  rgba(233, 231, 231, 0.726);
         }
     </style>
     <!-- ... Your HTML and CSS -->
@@ -133,11 +143,16 @@
         <div class="img-box">
             <img src="copy.svg">
         </div>
-        <pre class="resposta-layer">
-            Resposta aqui
-        </pre>
+        <pre class="resposta-layer">Resposta aqui</pre>
     </div>
-    <div class="titulo-renderizada">
+
+    <div class="container">
+        <div class="img-box img-box-2">
+            <img src="copy.svg">
+        </div>
+        <div class="titulo-renderizada">
+        </div>
+      
     </div>
     <div class="resposta-renderizada">
     </div>
