@@ -3,6 +3,7 @@ const userStoryName = document.querySelector('input');
 const description = document.querySelector('textarea');
 const resposta = document.querySelector('.resposta-layer');
 const respostaRenderizada = document.querySelector('.resposta-renderizada');
+const tituloRenderizada = document.querySelector('.titulo-renderizada');
 
 button.addEventListener('click', processRequest); 
 
@@ -25,6 +26,7 @@ function processRequest() {
         console.log(data)
         const htmlContent = markdownToHtml(text);
         respostaRenderizada.innerHTML = htmlContent;
+        tituloRenderizada.innerHTML = data.title;
         button.disabled = false;
         button.textContent = "Gerar Descrição"
         alert('Gerada descrição do PR com sucesso!');
