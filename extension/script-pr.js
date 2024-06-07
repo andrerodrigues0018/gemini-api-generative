@@ -23,7 +23,7 @@ function processRequest() {
         .then(response => response.json())
         .then(data => {
             markdown = data.markdown
-            const htmlContent = markdownToHtml(text);
+            const htmlContent = markdownToHtml(markdown);
             respostaRenderizada.innerHTML = htmlContent;
             tituloRenderizada.innerHTML = data.title;
             button.disabled = false;
@@ -97,7 +97,7 @@ function markdownToHtml(markdownText) {
 function copyText(element){
     var textoParaCopiar = markdown
     if(element == 'titulo'){
-        const textoParaCopiar = element.textContent;
+        textoParaCopiar = tituloRenderizada.textContent;
     }
     const tempElem = document.createElement('textarea');
     tempElem.textContent = textoParaCopiar;
