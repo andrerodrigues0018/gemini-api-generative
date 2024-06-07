@@ -8,7 +8,7 @@ const respostaRenderizada = document.querySelector('.resposta-renderizada');
 button.addEventListener('click', processRequest);
 tituloRenderizada.addEventListener('click', copyTitle)
 respostaRenderizada.addEventListener('click', copyDescription)
-
+var htmlContent = ''
 function processRequest() {
     button.disabled = true
     button.textContent = 'Carregando...';
@@ -23,7 +23,7 @@ function processRequest() {
         .then(response => response.json())
         .then(data => {
             const text = data.markdown
-            const htmlContent = markdownToHtml(text);
+            htmlContent = markdownToHtml(text);
             respostaRenderizada.innerHTML = htmlContent;
             tituloRenderizada.innerHTML = data.title;
             button.disabled = false;
@@ -95,7 +95,10 @@ function markdownToHtml(markdownText) {
 }
 
 function copyText(element){
-    const textoParaCopiar = element.textContent;
+    var textoParaCopiar = htmlContent
+    if(element == 'titulo'){
+        const textoParaCopiar = element.textContent;
+    }
     const tempElem = document.createElement('textarea');
     tempElem.textContent = textoParaCopiar;
     document.body.appendChild(tempElem);
