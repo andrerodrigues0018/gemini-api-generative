@@ -1,7 +1,7 @@
 const button = document.querySelector('.button-enviar');
 const userStoryName = document.querySelector('input');
 const description = document.querySelector('textarea');
-const resposta = document.querySelector('.resposta-layer');
+// const resposta = document.querySelector('.resposta-layer');
 const respostaRenderizada = document.querySelector('.resposta-renderizada');
 const tituloRenderizada = document.querySelector('.titulo-renderizada');
 
@@ -21,9 +21,6 @@ function processRequest() {
     .then(response => response.json())
     .then(data => {
         const text = data.markdown
-        
-        resposta.innerHTML = text
-        console.log(data)
         const htmlContent = markdownToHtml(text);
         respostaRenderizada.innerHTML = htmlContent;
         tituloRenderizada.innerHTML = data.title;
