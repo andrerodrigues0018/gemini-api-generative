@@ -6,37 +6,31 @@
 
     <style>
         *{
-            
-            font-family: 'amazon ember'; 
-            /* letter-spacing:.25px */
             color:rgb(227, 227, 227);
+            font-family: 'amazon ember';
+        }
+        b.orange{
+            color: rgb(210, 204, 30);
+        }
+        body{
             background: #131314;
         }
-        
 
         input, textarea, button{
-            /* padding:5px; */
             width: 470px; 
             padding: 14px 10px;
             margin-top:5px;
             border:1px solid grey;
-            
-        }
-
-        input, textarea, button{
+            color:rgb(227, 227, 227);
             background: #323234b9;
         }
 
-
         button{
-            /* background:#ff9900; */
             color:rgb(227, 227, 227);
-            
             font-size:14px;
-            /* font-weight: 700; */
             letter-spacing:.25px;
             border-radius:2px;
-            /* width: ; */
+            cursor: pointer;
         }
         .resposta-renderizada{
             color:rgb(227, 227, 227);
@@ -45,19 +39,18 @@
             border: dotted 1px rgb(104, 112, 120); 
             padding: 14px 10px;
             width: 450px; 
-            cursor: pointer;
+            cursor: grab;
+
         }
         .titulo-renderizada{
-            cursor: pointer;
+            cursor: grab;
             color:rgb(227, 227, 227);
-            line-height:  12px;
             font-size: 14px;min-inline-size: 0;
             word-break: break-word;
             border: solid 1px rgb(104, 112, 120); 
             padding: 14px 10px;
             width: 450px; 
             margin-bottom:5px;
-            height: 20px;
         }
         .titulo-renderizada:hover, .resposta-renderizada:hover{
             background-color:  rgba(104, 112, 120, 0.16);
@@ -66,17 +59,12 @@
             font-family: 'amazon ember'; 
             font-size:18px;
             font-weight: 700;
-            color:rgb(22, 25, 31);
             line-height: 12px;
-            /* margin:0 */
         }
         h4{
             font-family: 'amazon ember'; 
             font-size:15px;
             font-weight: 700;
-            color:rgb(22, 25, 31);
-            /* margin:15px 0; */
-            /* margin:0 */
         }
         h3{
             font-family: 'amazon ember'; 
@@ -84,16 +72,13 @@
             font-weight: 700;
             color:rgb(22, 25, 31);
             line-height: 12px;
-            /* margin:0 */
         }
         
-        ul{list-style-type: disc;
-            /* line-height:  12px; */
+        ul{
+            list-style-type: disc;
         }
         li{
             list-style-position: outside;
-            /* line-height:  12px; */
-
         }
     
         .container .img-box{
@@ -132,6 +117,7 @@
 
     <br>
     <br>
+    <h2> Resultado </h1>
     
     <div class="titulo-renderizada">
         Titulo da PR
@@ -140,11 +126,9 @@
     <div class="resposta-renderizada">
         Descrição da PR
     </div>
-    <p>Clique no titulo / descrição para copiar</p>
+    <p>Clique no titulo / descrição para <b class="orange">copiar</b></p>
 
     <script src="script-pr.js"></script>
-
-
 
 </body>
 
