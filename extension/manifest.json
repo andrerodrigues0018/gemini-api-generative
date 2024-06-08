@@ -1,8 +1,8 @@
 {
-    "name": "Generate PR Description Easy",
-    "version": "0.0.0.4",
+    "name": "Gerador de título e descrição para Pull Requests",
+    "version": "1.0.0.0",
     "manifest_version": 3,
-    "description": "An extension to facilite the life.",
+    "description": "Automatize Títulos e Descrições para Seus Pull Requests!",
     "permissions": [
         "sidePanel"
     ],
