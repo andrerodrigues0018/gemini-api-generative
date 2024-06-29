@@ -22,17 +22,21 @@ function processRequest() {
     })
         .then(response => response.json())
         .then(data => {
-            markdown = data.markdown
-            const htmlContent = markdownToHtml(markdown);
-            respostaRenderizada.innerHTML = htmlContent;
-            tituloRenderizada.innerHTML = data.title;
-            button.disabled = false;
-            button.textContent = "Gerar Descrição"
-            alert('Gerada descrição do PR com sucesso!');
+            if( data.markdown && data.title ){
+                markdown = data.markdown
+                const htmlContent = markdownToHtml(markdown);
+                respostaRenderizada.innerHTML = htmlContent;
+                tituloRenderizada.innerHTML = data.title;
+                button.disabled = false;
+                button.textContent = "Gerar Descrição"
+                alert('Gerada descrição do PR com sucesso!');
+            }else{
+                processRequest()
+            }
+           
         })
         .catch(error => {
-            console.error('Erro ao enviar imagem:', error);
-            alert('Erro ao enviar imagem.');
+            console.error('Erro ao processar reqyest:', error);
         });
 
 }
