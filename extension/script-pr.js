@@ -4,10 +4,12 @@ const description = document.querySelector('textarea');
 // const resposta = document.querySelector('.resposta-layer');
 const tituloRenderizada = document.querySelector('.titulo-renderizada');
 const respostaRenderizada = document.querySelector('.resposta-renderizada');
+const buttonCopyCommits = document.querySelector('.button-copy-commits');
 
 button.addEventListener('click', processRequest);
 tituloRenderizada.addEventListener('click', copyTitle)
 respostaRenderizada.addEventListener('click', copyDescription)
+buttonCopyCommits.addEventListener('click', getCommits)
 var markdown = ''
 function processRequest() {
     button.disabled = true
@@ -120,3 +122,20 @@ function copyDescription(){
     copyText('description')
 }
 
+function getCommits(){
+    chrome.runtime.sendMessage({ action: "getTexts" }, (response) => {
+        if (chrome.runtime.lastError) {
+            console.error("Erro ao capturar textos:", chrome.runtime.lastError);
+            return;
+        }
+  
+        const textList = document.getElementById("textList");
+        textList.innerHTML = "";
+  
+        response.forEach(text => {
+            const li = document.createElement("li");
+            li.textContent = text;
+            textList.appendChild(li);
+        });
+    });
+}
