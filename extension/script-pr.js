@@ -123,19 +123,18 @@ function copyDescription(){
 }
 
 function getCommits(){
-    chrome.runtime.sendMessage({ action: "getTexts" }, (response) => {
-        if (chrome.runtime.lastError) {
-            console.error("Erro ao capturar textos:", chrome.runtime.lastError);
-            return;
-        }
-  
+    window.parent.postMessage({ action: "requestTexts" }, "*");
+}
+
+window.addEventListener("message", (event) => {
+    if (event.data.action === "updateTexts") {
         const textList = document.getElementById("textList");
         textList.innerHTML = "";
-  
-        response.forEach(text => {
+
+        event.data.data.forEach(text => {
             const li = document.createElement("li");
             li.textContent = text;
             textList.appendChild(li);
         });
-    });
-}
+    }
+});
