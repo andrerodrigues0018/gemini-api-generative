@@ -1,142 +1,29 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>DNC - PR Generator</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
 </head>
 <body>
-
     <style>
-        *{
-            color:rgb(227, 227, 227);
-            font-family: 'amazon ember';
-        }
-        
         body{
-            background: #131314;
+            margin:0;
+            background-color: #131314;
+            color: white;
+            text-align: center;
+            font-family:Arial, Helvetica, sans-serif
         }
-
-        input, textarea, button{
-            width: 500px; 
-            padding: 14px 10px;
-            margin-top:5px;
-            border:1px solid grey;
-            color:rgb(227, 227, 227);
-            background: #323234b9;
-        }
-
-        button{
-            color:rgb(227, 227, 227);
-            font-size:14px;
-            letter-spacing:.25px;
-            border-radius:2px;
-            cursor: pointer;
-        }
-        .resposta-renderizada{
-            color:rgb(227, 227, 227);
-            font-size: 14px;min-inline-size: 0;
-            word-break: break-word;
-            border: dotted 1px rgb(104, 112, 120); 
-            padding: 14px 10px;
-            width: 475px; 
-            cursor: grab;
-
-        }
-        .titulo-renderizada{
-            cursor: grab;
-            color:rgb(227, 227, 227);
-            font-size: 14px;min-inline-size: 0;
-            word-break: break-word;
-            border: solid 1px rgb(104, 112, 120); 
-            padding: 14px 10px;
-            width: 475px; 
-            margin-bottom:5px;
-        }
-        .titulo-renderizada:hover, .resposta-renderizada:hover{
-            background-color:  rgba(104, 112, 120, 0.16);
-        }
-        h1{
-            padding-top: 14px;
-        }
-        h2{
-            font-family: 'amazon ember'; 
-            font-size:18px;
-            font-weight: 700;
-            line-height: 12px;
-        }
-        h4{
-            font-family: 'amazon ember'; 
-            font-size:15px;
-            font-weight: 700;
-        }
-        h3{
-            font-family: 'amazon ember'; 
-            font-size:18px;
-            font-weight: 700;
-            color:rgb(22, 25, 31);
-            line-height: 12px;
-        }
-
-        b.orange{
-            color: rgb(210, 204, 30);
-        }
-        ul{
-            list-style-type: disc;
-        }
-        li{
-            list-style-position: outside;
-        }
-    
-        .container .img-box{
-            margin-right: -45px;
-            margin-left: 15px;
-            margin-top: 25px;
-            z-index: 1;
-        }
-
-        .container .img-box-2{
-            margin-top: 10px;
-        }
-
-        .container .img-box img{
-            width: 20px;
-            height: 20px;
-            background-color: rgba(144, 143, 143, 0.46);
-            border-radius: 100%;
-            padding:5px;
-            cursor: pointer;
-        } 
-
-        .container img:hover{
-            fill: rgb(70, 67, 65);
-            background-color:  rgba(233, 231, 231, 0.726);
+        a{
+            color:rgb(33, 146, 211) !important;
         }
     </style>
-    <!-- ... Your HTML and CSS -->
-    
-    <link href="https://fonts.cdnfonts.com/css/amazon-ember" rel="stylesheet">
-    <h1> Gerador de Pull Request </h1>
-    <input type="text" placeholder="O código da user story. Ex: ENG-53"><br>
-    <textarea placeholder="Descreva sua tarefa aqui" rows="5"></textarea>
-    <br>
-    <button class="button-enviar">Gerar Descrição</button>
-
-    <br>
-    <br>
-    <h2> Resultado </h2>
-    
-    <div class="titulo-renderizada">
-        Titulo da PR
-    </div>
-
-    <div class="resposta-renderizada">
-        Descrição da PR
-    </div>
-    <p>Clique no titulo / descrição para <b class="orange">copiar</b></p>
-
-    <button class="button-copy-commits">Capturar Textos</button>
-    <h2>Lista de Textos</h2>
-    <ul id="textList"></ul>
-    <script src="script-pr.js"></script>
-
+    <h1>Temos novidade!</h1>
+    <p>
+        Instale a nova versão aqui: <br><br>
+        Acesse <a href="https://chromewebstore.google.com/detail/gitscribe-ai-powered-pr-d/hcbppckenpbogiofbjmoifecaknccjkg?authuser=1&hl=pt-BR">GitScribe AI Powered PR</a> e atualize.
+    </p>
 </body>
-
 </html>
